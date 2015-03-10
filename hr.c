@@ -6,9 +6,9 @@ typedef struct {
 
 void drawLine(line_options_t *options) {
   for (unsigned int i = 0; i < options->columns; i++)  {
-    printf("-");
+    putchar('-');
   }
-  printf("\n");
+  putchar('\n');
 }
 
 int main(int argc, const char *argv[])
