@@ -11,7 +11,7 @@ typedef struct {
   size_t dash_len;
 } line_options_t;
 
-unsigned int getColumnWidthFromOS() {
+unsigned int get_column_width_from_os() {
   struct winsize winsz;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz);
   return (unsigned int) winsz.ws_col;
@@ -33,7 +33,7 @@ int main(int argc, const char *argv[])
     .dash_len=sizeof(DEFAULT_DASH)
   };
 
-  options.columns = getColumnWidthFromOS();
+  options.columns = get_column_width_from_os();
   printf("Doing %d times\n", options.columns);
 
   drawLine(&options);
