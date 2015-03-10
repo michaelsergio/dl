@@ -18,6 +18,7 @@ int main(int argc, const char *argv[])
   };
 
   drawLine(&options);
+
   return 0;
 }
 
