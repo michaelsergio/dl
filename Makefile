@@ -4,6 +4,9 @@ CC = gcc
 
 all: hr.o
 
+debug: CFLAGS += -DDEBUG -g
+debug: hr.o
+
 hr.o:
 	$(CC) $(CFLAGS) hr.c -o hr.exe
 
