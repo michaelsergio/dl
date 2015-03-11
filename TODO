@@ -1,0 +1,40 @@
+Add arguments.
+
+Add easy color args.
+-r red
+-g green
+-b blue
+-y yellow
+-k black
+-m magenta
+-c cyan
+-w white
+
+--help     
+--version
+--dash      Change the - character that gets output.
+--columns   Change the number of columns to output.
+--nounicode Supress default unicode
+--title     Calculate center of string so I can add a section title.
+--bs        Before space (default 0)
+--as        After space  (default 0)
+--surrond   Surronds the title in between two hr lines.
+
+Instead of title being argument, put after command:
+hr "Hello World"
+outputs: ------ Hello World -------
+
+
+On small screens with longer title, surrond the text:
+------------
+Hello World 
+------------
+(COLUMNS=12)
+
+
+
+Write my automated tests.
+
+Follow GNU standards for documentation.
+
+HR_OPTIONS environment variable for parsing first.

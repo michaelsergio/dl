@@ -1,1 +1,12 @@
-#define DEFAULT_DASH_UNICODE "Δικ "
+Do tests by redirecting stdout of exec call.
+
+
+test env unicode 
+test env ascii
+
+test repeat
+
+This weird unicode string for repeating at various cut off lengths.
+DEFAULT_DASH_UNICODE "Δικ "
+
+

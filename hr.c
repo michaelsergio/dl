@@ -23,7 +23,7 @@ typedef struct {
   size_t dash_len;
 } line_options_t;
 
-unsigned int get_column_width_from_os() {
+unsigned int get_column_width_from_term() {
   struct winsize winsz;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz);
   return (unsigned int) winsz.ws_col;
@@ -85,7 +85,7 @@ int main(int argc, const char *argv[])
   // Sets the program's locale so functions like mblen function properly.
   setlocale(LC_CTYPE, "");
 
-  line_options.columns = get_column_width_from_os();
+  line_options.columns = get_column_width_from_term();
 
   // Switches default to unicode default.
   bool unicode_supported = is_unicode_supported();
