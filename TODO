@@ -13,7 +13,7 @@ Add easy color args.
 --help     
 --version
 --dash      Change the - character that gets output.
---columns   Change the number of columns to output.
+--columns   Force the number of columns to output.
 --nounicode Supress default unicode
 --title     Calculate center of string so I can add a section title.
 --bs        Before space (default 0)
