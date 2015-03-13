@@ -13,7 +13,7 @@ Add easy color args.
 --help     
 --version
 --dash      Change the - character that gets output.
---columns   Force the number of columns to output.
+-n --columnsForce the number of columns to output.
 --nounicode Supress default unicode
 --title     Calculate center of string so I can add a section title.
 --bs        Before space (default 0)
@@ -33,8 +33,19 @@ Hello World
 
 
 
+Add -L
+Add -R
+To left indent and right indent the title
+-n 40 -L:
+Hello ----------------------------------
+-n 40 -R:
+---------------------------------- World
+
 Write my automated tests.
 
 Follow GNU standards for documentation.
 
 HR_OPTIONS environment variable for parsing first.
+
+! When output is a pipe it should only print 80 dashes instead of the 9000+
+characters it sees.
