@@ -14,6 +14,7 @@ Add easy color args.
 --version
 --dash      Change the - character that gets output.
 -n --columnsForce the number of columns to output.
+-8          Force 80 columns to output.
 --nounicode Supress default unicode
 --title     Calculate center of string so I can add a section title.
 --bs        Before space (default 0)
