@@ -12,7 +12,7 @@
 #define DEFAULT_DASH_UNICODE "─"
 
 #ifdef DEBUG
-  #define DEBUG_LOG(...) printf(__VA_ARGS__)
+  #define DEBUG_LOG(...) fprintf(stderr, __VA_ARGS__)
 #else
   #define DEBUG_LOG(...)
 #endif
@@ -25,7 +25,13 @@ typedef struct {
 
 unsigned int get_column_width_from_term() {
   struct winsize winsz;
-  ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz);
+  int err = ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz);
+
+  if (err) {
+    DEBUG_LOG("Error determining window size. Using default size.\n");
+    return DEFAULT_COLUMN_LEN;
+  }
+
   return (unsigned int) winsz.ws_col;
 }
 
