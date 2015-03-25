@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <locale.h>
 #include <sys/ioctl.h>
+#include <getopt.h>
+#include "ansi.h"
 
 #define DEFAULT_COLUMN_LEN 80
 #define DEFAULT_DASH "-"
@@ -21,7 +23,12 @@ typedef struct {
   unsigned int columns;
   char *dash;
   size_t dash_len;
+  char *color;           // A string defined in ansi.h or NULL.
 } line_options_t;
+
+typedef struct {
+  // TBD
+} cmd_options_t;
 
 unsigned int get_column_width_from_term() {
   struct winsize winsz;
@@ -69,15 +76,90 @@ void drawLine(line_options_t *options) {
   size_t str_ring_len = strlen(options->dash);
   size_t position = 0;
 
+  if (options->color) {
+    puts(options->color);
+  }
+
   for (i = 0; i < options->columns; i++)  {
     position += put_mbchar(str_ring + position, str_ring_len);
     position %= str_ring_len; // Go back to begining of ring if out.
     // Increment i only after a mbchar has been printed.
   }
+
+  if (options->color) {
+    puts(ANSI_COLOR_RESET);
+  }
   putchar('\n');
+
   DEBUG_LOG("Printed %d characters\n", i);
 }
 
+// TODO Remove this 
+static int verbose_flag;
+void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
+  while (1) {
+    static struct option long_options[] = {
+      /* These options set a flag. */
+      {"verbose", no_argument,       &verbose_flag, 1},
+      {"brief",   no_argument,       &verbose_flag, 0},
+      /* These options don’t set a flag.
+         We distinguish them by their indices. */
+      {"help",     no_argument,       0, 'h'},
+      {"version",  no_argument,       0, 'v'},
+      {"dash",     no_argument,       0, 'd'},
+      {"columns",  required_argument, 0, 'n'},
+      {"nounicode",no_argument,       0, 'u'},
+      {"bs",       required_argument, 0, 'b'},
+      {"as",       required_argument, 0, 'a'},
+      {"surround", required_argument, 0, 's'},
+      {0, 0, 0, 0}
+    };
+    /* getopt_long stores the option index here. */
+    int option_index = 0;
+
+    int c = getopt_long (argc, argv, "rgbykm:abc:d:f:", long_options, &option_index);
+
+    /* Detect the end of the options. */
+    if (c == -1)
+      break;
+
+    switch(c) {
+      case 0:
+        /* If this option set a flag, do nothing else now. */
+        if (long_options[option_index].flag != 0) break;
+        printf ("option %s", long_options[option_index].name);
+        if (optarg) printf (" with arg %s\n", optarg);
+        break;
+
+      case 'a':
+        puts("option -a\n");
+        break;
+
+      case 'b':
+        puts("option -b\n");
+        break;
+
+      case 'c':
+        printf("option -c with value `%s'\n", optarg);
+        break;
+
+      case 'd':
+        printf("option -d with value `%s'\n", optarg);
+        break;
+
+      case 'f':
+        printf("option -f with value `%s'\n", optarg);
+        break;
+
+      case '?':
+        /* getopt_long already printed an error message. */
+        break;
+
+      default:
+        abort();
+    }
+  }
+}
 
 int main(int argc, const char *argv[])
 {
@@ -85,8 +167,15 @@ int main(int argc, const char *argv[])
   line_options_t line_options = { 
     .columns=DEFAULT_COLUMN_LEN,
     .dash=(char *)DEFAULT_DASH,
-    .dash_len=sizeof(DEFAULT_DASH) - 1 // Ignore NULL Char
+    .dash_len=sizeof(DEFAULT_DASH) - 1, // Ignore NULL Char
+    .color=NULL
   };
+
+  cmd_options_t cmd_options;
+  check_options(argc, argv, &cmd_options);
+
+  // should get from cmd_options instead
+  if (verbose_flag) line_options.color = ANSI_COLOR_RED;
 
   // Sets the program's locale so functions like mblen function properly.
   setlocale(LC_CTYPE, "");
