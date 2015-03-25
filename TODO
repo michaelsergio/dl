@@ -49,3 +49,5 @@ HR_OPTIONS environment variable for parsing first.
 
 ! When output is a pipe it should only print 80 dashes instead of the 9000+
 characters it sees.
+
+I should run all my tests with Valgrind, espcially the combinations of flags.
