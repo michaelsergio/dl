@@ -20,14 +20,15 @@
 #endif
 
 typedef struct {
-  unsigned int columns;
+  unsigned columns;
   char *dash;
   size_t dash_len;
   char *color;           // A string defined in ansi.h or NULL.
 } line_options_t;
 
 typedef struct {
-  // TBD
+  char color;
+  unsigned force_columns;
 } cmd_options_t;
 
 unsigned int get_column_width_from_term() {
@@ -94,6 +95,14 @@ void drawLine(line_options_t *options) {
   DEBUG_LOG("Printed %d characters\n", i);
 }
 
+void show_help() {
+  printf("Help!!!!\n");
+}
+
+void show_version() {
+  printf("Version 0\n");
+}
+
 // TODO Remove this 
 static int verbose_flag;
 void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
@@ -112,12 +121,20 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
       {"bs",       required_argument, 0, 'b'},
       {"as",       required_argument, 0, 'a'},
       {"surround", required_argument, 0, 's'},
+      {"red",      no_argument, 0, 'r'},
+      {"green",    no_argument, 0, 'g'},
+      {"blue",     no_argument, 0, 'b'},
+      {"cyan",     no_argument, 0, 'c'},
+      {"magenta",  no_argument, 0, 'm'},
+      {"yellow",   no_argument, 0, 'y'},
+      {"black",    no_argument, 0, 'k'},
+      {"white",    no_argument, 0, 'w'},
       {0, 0, 0, 0}
     };
     /* getopt_long stores the option index here. */
     int option_index = 0;
 
-    int c = getopt_long (argc, argv, "rgbykm:abc:d:f:", long_options, &option_index);
+    int c = getopt_long(argc, argv, "rgbymckwn:a:b:d:vh", long_options, &option_index);
 
     /* Detect the end of the options. */
     if (c == -1)
@@ -135,14 +152,6 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
         puts("option -a\n");
         break;
 
-      case 'b':
-        puts("option -b\n");
-        break;
-
-      case 'c':
-        printf("option -c with value `%s'\n", optarg);
-        break;
-
       case 'd':
         printf("option -d with value `%s'\n", optarg);
         break;
@@ -155,7 +164,38 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
         /* getopt_long already printed an error message. */
         break;
 
+      case 'n': 
+        //if (long_options[option_index].flag != 0) break;
+        DEBUG_LOG("optarg: %s\n", optarg);
+        cmd_options->force_columns = atoi(optarg);
+        break;
+
+      case 'v':
+        show_version();
+        exit(0);
+        break;
+
+      case 'h':
+        show_help();
+        exit(0);
+        break;
+
+      // Fall through all the following color codes.
+      // Set the color code now so it can be 
+      // translated into an ansi color later.
+      case 'r':
+      case 'g':
+      case 'b':
+      case 'c':
+      case 'm':
+      case 'y':
+      case 'k':
+      case 'w':
+        cmd_options->color = c;
+        break;
+
       default:
+        DEBUG_LOG("%d('%c') unused!\n", c, c);
         abort();
     }
   }
@@ -172,15 +212,32 @@ int main(int argc, const char *argv[])
   };
 
   cmd_options_t cmd_options;
+  memset(&cmd_options, 0, sizeof(cmd_options));
   check_options(argc, argv, &cmd_options);
 
   // should get from cmd_options instead
-  if (verbose_flag) line_options.color = ANSI_COLOR_RED;
+  switch (cmd_options.color) {
+    case 0:   line_options.color = NULL; break;
+    case 'r': line_options.color = ANSI_COLOR_RED; break;
+    case 'g': line_options.color = ANSI_COLOR_GREEN; break;
+    case 'b': line_options.color = ANSI_COLOR_BLUE; break;
+    case 'y': line_options.color = ANSI_COLOR_YELLOW; break;
+    case 'm': line_options.color = ANSI_COLOR_MAGENTA; break;
+    case 'c': line_options.color = ANSI_COLOR_CYAN; break;
+    case 'k': line_options.color = ANSI_COLOR_BLACK; break;
+    case 'w': line_options.color = ANSI_COLOR_WHITE; break;
+  }
+
 
   // Sets the program's locale so functions like mblen function properly.
   setlocale(LC_CTYPE, "");
 
-  line_options.columns = get_column_width_from_term();
+  if (cmd_options.force_columns) {
+    line_options.columns = cmd_options.force_columns;
+  }
+  else {
+    line_options.columns = get_column_width_from_term();
+  }
 
   // Switches default to unicode default.
   bool unicode_supported = is_unicode_supported();
