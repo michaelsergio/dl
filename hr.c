@@ -13,6 +13,8 @@
 #define DEFAULT_DASH "-"
 #define DEFAULT_DASH_UNICODE "─"
 
+#define PROGRAM_NAME "hr"
+
 #ifdef DEBUG
   #define DEBUG_LOG(...) fprintf(stderr, __VA_ARGS__)
 #else
@@ -98,12 +100,26 @@ void drawLine(line_options_t *options) {
   DEBUG_LOG("Printed %d characters\n", i);
 }
 
-void show_help() {
-  printf("Help!!!!\n");
+void show_usage() {
+  fprintf(stderr, "Usage:  %s [flags] [text]\n", PROGRAM_NAME);
+  fprintf(stderr, 
+          "  -h  --help\n"
+          "  -v  --version\n"
+          "  -r  --red\n"
+          "  -g  --green\n"
+          "  -b  --blue\n"
+          "  -y  --yellow\n"
+          "  -c  --cyan\n"
+          "  -m  --magenta\n"
+          "  -k  --black\n"
+          "  -w  --white\n"
+          "  -d  --dash dash_symbol\n"
+          "  -n  --columns number\n"
+  );
 }
 
 void show_version() {
-  printf("Version 0\n");
+  printf("hr - Horizontal Lines 0.0.1\n");
 }
 
 // TODO Remove this 
@@ -185,7 +201,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
 
       case '?': // Fallthorugh to help when error occurs.
       case 'h':
-        show_help();
+        show_usage();
         exit(0);
         break;
 
