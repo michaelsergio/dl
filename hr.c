@@ -24,12 +24,14 @@ typedef struct {
   char *dash;
   size_t dash_len;
   char *color;           // A string defined in ansi.h or NULL.
+  const char *text;
 } line_options_t;
 
 typedef struct {
   char color;
   unsigned force_columns;
   char *force_dash;
+  const char *text;
 } cmd_options_t;
 
 unsigned int get_column_width_from_term() {
@@ -135,11 +137,13 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
     /* getopt_long stores the option index here. */
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "rgbymckwn:a:p:d:vh", long_options, &option_index);
-
+    int c = getopt_long(argc, argv, "rgbymckwn:a:p:d:vh", long_options, &option_index); 
     /* Detect the end of the options. */
-    if (c == -1)
+    if (c == -1) {
+      // If there is more after the options, use that as the input text.
+      if (optind != argc) cmd_options->text = argv[optind];
       break;
+    }
 
     switch(c) {
       case 0:
@@ -233,6 +237,8 @@ int main(int argc, const char *argv[])
     case 'w': line_options.color = ANSI_COLOR_WHITE; break;
   }
 
+  // Sets the text if the user set any.
+  if (cmd_options.text) line_options.text = cmd_options.text;
 
   // Sets the program's locale so functions like mblen function properly.
   setlocale(LC_CTYPE, "");
