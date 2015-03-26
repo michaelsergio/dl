@@ -119,7 +119,7 @@ void show_usage() {
 }
 
 void show_version() {
-  printf("hr - Horizontal Lines 0.0.1\n");
+  fprintf(stderr, "hr version 0.0.1\n");
 }
 
 // TODO Remove this 
