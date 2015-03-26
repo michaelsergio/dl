@@ -29,6 +29,7 @@ typedef struct {
 typedef struct {
   char color;
   unsigned force_columns;
+  char *force_dash;
 } cmd_options_t;
 
 unsigned int get_column_width_from_term() {
@@ -152,16 +153,19 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
         puts("option -a\n");
         break;
 
-      case 'd':
-        printf("option -d with value `%s'\n", optarg);
-        break;
-
       case 'f':
         printf("option -f with value `%s'\n", optarg);
         break;
 
       case '?':
         /* getopt_long already printed an error message. */
+        break;
+
+      case 'd':
+        // TODO: Do I need to memcpy the item in optarg so I can use it later?
+        // Or can I use the address since its created with the program args 
+        // and will always exist?
+        cmd_options->force_dash = optarg;
         break;
 
       case 'n': 
@@ -239,11 +243,16 @@ int main(int argc, const char *argv[])
     line_options.columns = get_column_width_from_term();
   }
 
-  // Switches default to unicode default.
-  bool unicode_supported = is_unicode_supported();
-  if (unicode_supported) {
-    line_options.dash = (char *) DEFAULT_DASH_UNICODE;
-    line_options.dash_len = strlen(DEFAULT_DASH_UNICODE);
+  if (cmd_options.force_dash) {
+    line_options.dash = cmd_options.force_dash;
+  }
+  else {
+    // Switches default to unicode default.
+    bool unicode_supported = is_unicode_supported();
+    if (unicode_supported) {
+      line_options.dash = (char *) DEFAULT_DASH_UNICODE;
+      line_options.dash_len = strlen(DEFAULT_DASH_UNICODE);
+    }
   }
 
   drawLine(&line_options);
