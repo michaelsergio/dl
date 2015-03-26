@@ -119,8 +119,8 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
       {"dash",     no_argument,       0, 'd'},
       {"columns",  required_argument, 0, 'n'},
       {"nounicode",no_argument,       0, 'u'},
-      {"bs",       required_argument, 0, 'b'},
-      {"as",       required_argument, 0, 'a'},
+      {"bs",       required_argument, 0, 'p'}, // pre-
+      {"as",       required_argument, 0, 'a'}, // after-
       {"surround", required_argument, 0, 's'},
       {"red",      no_argument, 0, 'r'},
       {"green",    no_argument, 0, 'g'},
@@ -135,7 +135,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
     /* getopt_long stores the option index here. */
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "rgbymckwn:a:b:d:vh", long_options, &option_index);
+    int c = getopt_long(argc, argv, "rgbymckwn:a:p:d:vh", long_options, &option_index);
 
     /* Detect the end of the options. */
     if (c == -1)
@@ -153,12 +153,12 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
         puts("option -a\n");
         break;
 
-      case 'f':
-        printf("option -f with value `%s'\n", optarg);
+      case 'p':
+        puts("option -p\n");
         break;
 
-      case '?':
-        /* getopt_long already printed an error message. */
+      case 'f':
+        printf("option -f with value `%s'\n", optarg);
         break;
 
       case 'd':
@@ -179,6 +179,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
         exit(0);
         break;
 
+      case '?': // Fallthorugh to help when error occurs.
       case 'h':
         show_help();
         exit(0);
