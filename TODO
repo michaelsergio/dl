@@ -55,3 +55,8 @@ I should run all my tests with Valgrind, espcially the combinations of flags.
 
 Option to remove the title color.
 
+
+Literal Fence
+http://en.wikipedia.org/wiki/Box-drawing_character
+hr -d ╦
+Add to the HR_OPTIONS env var.
