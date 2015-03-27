@@ -52,3 +52,6 @@ HR_OPTIONS environment variable for parsing first.
 characters it sees.
 
 I should run all my tests with Valgrind, espcially the combinations of flags.
+
+Option to remove the title color.
+

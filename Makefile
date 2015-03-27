@@ -1,6 +1,7 @@
 CFLAGS = -ansi -Wall -pedantic -std=c99
 LFLAGS =  
 CC = gcc
+MANPATH=/usr/local/share/man
 
 all: hr.o
 
@@ -12,3 +13,7 @@ hr.o:
 
 clean:
 	rm hr.exe
+
+install-man:
+	cp $(MANFILE) $(MANPATH)/$(MANFILE)
+	sudo mandb
