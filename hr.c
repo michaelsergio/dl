@@ -83,7 +83,7 @@ void drawLine(line_options_t *options) {
   size_t position = 0;
 
   if (options->color) {
-    puts(options->color);
+    printf("%s", options->color);
   }
 
   for (i = 0; i < options->columns; i++)  {
@@ -93,7 +93,7 @@ void drawLine(line_options_t *options) {
   }
 
   if (options->color) {
-    puts(ANSI_COLOR_RESET);
+    printf("%s", ANSI_COLOR_RESET);
   }
   putchar('\n');
 
