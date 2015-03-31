@@ -3,13 +3,15 @@ LFLAGS =
 CC = gcc
 MANPATH=/usr/local/share/man
 
+SRC=src/
+
 all: hr.o
 
 debug: CFLAGS += -DDEBUG -g
 debug: hr.o
 
 hr.o:
-	$(CC) $(CFLAGS) hr.c -o hr.exe
+	$(CC) $(CFLAGS) $(SRC)/hr.c -o hr.exe
 
 clean:
 	rm hr.exe
