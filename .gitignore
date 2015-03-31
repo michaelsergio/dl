@@ -1,5 +1,6 @@
 # Build files
 Makefile
+hr # default target name
 
 # Object files
 *.o

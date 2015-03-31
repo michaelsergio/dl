@@ -1,13 +1,23 @@
+SHELL = /bin/sh
+CC = gcc
 CFLAGS = -ansi -Wall -pedantic -std=c99
 LFLAGS =  
-CC = gcc
 
 
-EXENAME=hr
-SRC=src/
-INSTALL_DIR=/usr/local/bin
-MANFILE=hr.7
-MANPATH=/usr/local/share/man/man7
+TARGET=hr
+SRCDIR=src
+
+# Need to follow better makefile conventions:
+# https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+DESTDIR = 
+prefix = $(DESTDIR)/usr/local
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+
+datarootdir = $(prefix)/share
+mandir = $(datarootdir)/man
+man1dir = $(mandir)/man1
+man1ext = .1
 
 all: hr.o
 
@@ -15,20 +25,20 @@ debug: CFLAGS += -DDEBUG -g
 debug: hr.o
 
 hr.o:
-	$(CC) $(CFLAGS) $(SRC)/hr.c -o $(EXENAME)
+	$(CC) $(CFLAGS) $(SRCDIR)/hr.c -o $(TARGET)
 
 clean:
-	rm $(EXENAME)
+	rm $(TARGET)
 
 install:
-	cp $(EXENAME) $(INSTALL_DIR)/$(EXENAME)
+	cp $(TARGET) $(bindir)/$(TARGET)
 
 install-man:
-	mkdir -p $(MANPATH)
-	cp $(MANFILE) $(MANPATH)/$(MANFILE)
+	mkdir -p $(man1dir)
+	cp $(TARGET)$(man1ext) $(man1dir)/$(TARGET)$(man1ext)
 	mandb
 
 uninstall:
-	rm $(INSTALL_DIR)/$(EXENAME)
-	rm $(MANPATH)/$(MANFILE)
+	rm $(bindir)/$(TARGET)
+	rm $(man1dir)/$(TARGET)$(man1ext)
 
