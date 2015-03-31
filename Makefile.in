@@ -1,9 +1,13 @@
 CFLAGS = -ansi -Wall -pedantic -std=c99
 LFLAGS =  
 CC = gcc
-MANPATH=/usr/local/share/man
 
+
+EXENAME=hr.exe
 SRC=src/
+INSTALL_DIR=/usr/local/bin
+MANFILE=hr.7
+MANPATH=/usr/local/share/man/man7
 
 all: hr.o
 
@@ -11,11 +15,20 @@ debug: CFLAGS += -DDEBUG -g
 debug: hr.o
 
 hr.o:
-	$(CC) $(CFLAGS) $(SRC)/hr.c -o hr.exe
+	$(CC) $(CFLAGS) $(SRC)/hr.c -o $(EXENAME)
 
 clean:
-	rm hr.exe
+	rm $(EXENAME)
+
+install:
+	cp $(EXENAME) $(INSTALL_DIR)/$(EXENAME)
 
 install-man:
+	mkdir -p $(MANPATH)
 	cp $(MANFILE) $(MANPATH)/$(MANFILE)
-	sudo mandb
+	mandb
+
+uninstall:
+	rm $(INSTALL_DIR)/$(EXENAME)
+	rm $(MANPATH)/$(MANFILE)
+
