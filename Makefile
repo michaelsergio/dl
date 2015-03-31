@@ -33,7 +33,10 @@ clean-build:
 clean-install:
 	#rm Makefile # This is for configure
 
-install:
+install: install-bin install-man
+
+install-bin:
+	mkdir -p $(bindir)
 	cp $(TARGET) $(bindir)/$(TARGET)
 
 install-man:
