@@ -3,7 +3,7 @@ LFLAGS =
 CC = gcc
 
 
-EXENAME=hr.exe
+EXENAME=hr
 SRC=src/
 INSTALL_DIR=/usr/local/bin
 MANFILE=hr.7
