@@ -29,6 +29,7 @@ hr.o:
 
 clean:
 	rm $(TARGET)
+	rm Makefile
 
 install:
 	cp $(TARGET) $(bindir)/$(TARGET)
