@@ -19,10 +19,10 @@ mandir = $(datarootdir)/man
 man1dir = $(mandir)/man1
 man1ext = .1
 
-all: hr.o
+all: hr
 
 debug: CFLAGS += -DDEBUG -g
-debug: hr.o
+debug: hr
 
 clean: clean-build clean-install
 
