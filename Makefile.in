@@ -24,9 +24,6 @@ all: hr.o
 debug: CFLAGS += -DDEBUG -g
 debug: hr.o
 
-hr.o:
-	$(CC) $(CFLAGS) $(SRCDIR)/hr.c -o $(TARGET)
-
 clean:
 	rm $(TARGET)
 	rm Makefile
@@ -43,3 +40,7 @@ uninstall:
 	rm $(bindir)/$(TARGET)
 	rm $(man1dir)/$(TARGET)$(man1ext)
 
+hr: hr.o
+	$(CC) $(CFLAGS) hr.o -o $(TARGET)
+
+hr.o: hr.c
