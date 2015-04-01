@@ -34,5 +34,5 @@ Make these permanent by adding:
 
 Silly Things:
 
-    alias forza="hr -g && hr -w && hr -r"
+    alias forza="hr -g -d ▓ && hr -w -d ▓ && hr -r -d ▓"
     forza
