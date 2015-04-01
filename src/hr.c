@@ -53,7 +53,7 @@ unsigned int get_column_width_from_term() {
 // What if the strsize of LANG is too short.
     // Increment i only after a mbchar has been printed.
 // I dont fully trust this code.
-bool is_unicode_supported() {
+bool is_utf8_supported() {
   // The LANG enviorment variable should be defined with UTF in its name.
   char *lang = getenv("LANG");
   DEBUG_LOG("Current Env: %s\n", lang);
@@ -136,7 +136,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
       {"version",  no_argument,       0, 'v'},
       {"dash",     no_argument,       0, 'd'},
       {"columns",  required_argument, 0, 'n'},
-      {"nounicode",no_argument,       0, 'u'},
+      {"noutf8",   no_argument,       0, 'u'},
       {"bs",       required_argument, 0, 'p'}, // pre-
       {"as",       required_argument, 0, 'a'}, // after-
       {"surround", required_argument, 0, 's'},
@@ -270,9 +270,9 @@ int main(int argc, const char *argv[])
     line_options.dash = cmd_options.force_dash;
   }
   else {
-    // Switches default to unicode default.
-    bool unicode_supported = is_unicode_supported();
-    if (unicode_supported) {
+    // Switches default to utf-8 default.
+    bool utf8_supported = is_utf8_supported();
+    if (utf8_supported) {
       line_options.dash = (char *) DEFAULT_DASH_UNICODE;
       line_options.dash_len = strlen(DEFAULT_DASH_UNICODE);
     }
