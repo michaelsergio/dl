@@ -105,6 +105,7 @@ void show_usage() {
   fprintf(stderr, 
           "  -h  --help\n"
           "  -v  --version\n"
+          "Colors:\n"
           "  -r  --red\n"
           "  -g  --green\n"
           "  -b  --blue\n"
@@ -113,8 +114,11 @@ void show_usage() {
           "  -m  --magenta\n"
           "  -k  --black\n"
           "  -w  --white\n"
+          "  An uppercase color flag uses the bright version of that color.\n"
+          "\n"
           "  -d  --dash dash_symbol\n"
           "  -n  --columns number\n"
+          "  text Text to be inserted into the center of a line"
   );
 }
 
@@ -153,7 +157,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
     /* getopt_long stores the option index here. */
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "rgbymckwn:a:p:d:vh", long_options, &option_index); 
+    int c = getopt_long(argc, argv, "rgbymckwRGBCMYKWn:a:p:d:vh", long_options, &option_index); 
     /* Detect the end of the options. */
     if (c == -1) {
       // If there is more after the options, use that as the input text.
@@ -216,6 +220,14 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
       case 'y':
       case 'k':
       case 'w':
+      case 'R':
+      case 'G':
+      case 'B':
+      case 'C':
+      case 'M':
+      case 'Y':
+      case 'K':
+      case 'W':
         cmd_options->color = c;
         break;
 
@@ -251,6 +263,15 @@ int main(int argc, const char *argv[])
     case 'c': line_options.color = ANSI_COLOR_CYAN; break;
     case 'k': line_options.color = ANSI_COLOR_BLACK; break;
     case 'w': line_options.color = ANSI_COLOR_WHITE; break;
+    case 'R': line_options.color = ANSI_COLOR_BRIGHT_RED; break;
+    case 'G': line_options.color = ANSI_COLOR_BRIGHT_GREEN; break;
+    case 'B': line_options.color = ANSI_COLOR_BRIGHT_BLUE; break;
+    case 'Y': line_options.color = ANSI_COLOR_BRIGHT_YELLOW; break;
+    case 'M': line_options.color = ANSI_COLOR_BRIGHT_MAGENTA; break;
+    case 'C': line_options.color = ANSI_COLOR_BRIGHT_CYAN; break;
+    case 'K': line_options.color = ANSI_COLOR_BRIGHT_BLACK; break;
+    case 'W': line_options.color = ANSI_COLOR_BRIGHT_WHITE; break;
+    default:  line_options.color = NULL; break;
   }
 
   // Sets the text if the user set any.

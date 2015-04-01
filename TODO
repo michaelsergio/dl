@@ -60,3 +60,6 @@ Literal Fence
 http://en.wikipedia.org/wiki/Box-drawing_character
 hr -d ╦
 Add to the HR_OPTIONS env var.
+
+
+Use rtomayko/ronn to generate man page.
