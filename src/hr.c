@@ -118,7 +118,7 @@ void show_usage() {
           "\n"
           "  -d  --dash dash_symbol\n"
           "  -n  --columns number\n"
-          "  text Text to be inserted into the center of a line"
+          "  text Text to be inserted into the center of a line.\n"
   );
 }
 
