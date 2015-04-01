@@ -4,7 +4,7 @@ Draw a line in the Unix Tradition.
 ## Installation
 
 Verify the variables are set correctly for you OS in Makefile.
-By default, thier set for Ubuntu.
+By default, they are set for Ubuntu.
 I'll need to create a configure file for OS X in the future.
 
 Run the following commands:
@@ -22,6 +22,15 @@ Basic Usage:
     hr -d -
     hr -n 20
     hr --help
+
+Other lines:
+
+    hr -d ━
+    hr -d ╩
+
+Make these permanent by adding:
+
+    export HR_OPTIONS="-d ╩" to your bashrc.
 
 Silly Things:
 
