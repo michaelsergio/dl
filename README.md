@@ -3,9 +3,11 @@ Draw a line in the Unix Tradition.
 
 ## Installation
 
-Run the following commands:
+Verify the variables are set correctly for you OS in Makefile.
+By default, thier set for Ubuntu.
+I'll need to create a configure file for OS X in the future.
 
-    ./config.sh
+Run the following commands:
     make
     make install
 
