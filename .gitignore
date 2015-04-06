@@ -1,6 +1,6 @@
 # Build files
  # default target name
-hr
+dl
 
 # Object files
 *.o

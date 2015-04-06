@@ -29,6 +29,8 @@ TARGET=dl
 
 # Everything else is part of the makefile.
 
+UNAME := $(shell uname)
+
 all: dl
 
 debug: CFLAGS += -DDEBUG -g
@@ -52,7 +54,9 @@ install-bin:
 install-man:
 	mkdir -p $(man1dir)
 	cp $(TARGET)$(man1ext) $(man1dir)/$(TARGET)$(man1ext)
-	mandb
+	ifneq ($(UNAME), Darwin)
+	  mandb
+	endif
 
 uninstall:
 	rm $(bindir)/$(TARGET)
