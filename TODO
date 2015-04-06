@@ -19,14 +19,14 @@ Add easy color args.
 --title     Calculate center of string so I can add a section title.
 --bs        Before space (default 0)
 --as        After space  (default 0)
---surrond   Surronds the title in between two dl lines.
+--surround   Surrounds the title in between two dl lines.
 
 Instead of title being argument, put after command:
 dl "Hello World"
 outputs: ------ Hello World -------
 
 
-On small screens with longer title, surrond the text:
+On small screens with longer title, surround the text:
 ------------
 Hello World 
 ------------
