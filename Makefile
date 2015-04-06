@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 CC = gcc
 CFLAGS = -ansi -Wall -pedantic -std=c99
-LFLAGS =  
+LDFLAGS =  
 VPATH=src
 
 # Following makefile conventions:
