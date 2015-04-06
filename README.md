@@ -35,3 +35,9 @@ Make these permanent by adding:
 Silly Things:
 
     dl -g -d ▓ ; dl -w -d ▓ ; dl -r -d ▓ # Forza!
+
+## Features
+
+ * Multi-byte Aware. Unicode supported.
+ * Colorful ANSI line options.
+ * Permanent Environment settable options.
