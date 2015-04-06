@@ -128,7 +128,7 @@ void show_version() {
 
 // TODO Remove this 
 static int verbose_flag;
-void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
+void check_options(int argc, char * const *argv, cmd_options_t *cmd_options) {
   while (1) {
     static struct option long_options[] = {
       /* These options set a flag. */
@@ -238,7 +238,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
   }
 }
 
-int main(int argc, const char *argv[])
+int main(int argc, char * const *argv)
 {
   // The default line options.
   line_options_t line_options = { 
