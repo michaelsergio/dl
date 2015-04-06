@@ -24,15 +24,15 @@ man1dir = $(mandir)/man1
 man1ext = .1
 
 # Executable Name
-TARGET=hr
+TARGET=dl
 
 
 # Everything else is part of the makefile.
 
-all: hr
+all: dl
 
 debug: CFLAGS += -DDEBUG -g
-debug: hr
+debug: dl
 
 clean: clean-build clean-install
 
@@ -58,7 +58,7 @@ uninstall:
 	rm $(bindir)/$(TARGET)
 	rm $(man1dir)/$(TARGET)$(man1ext)
 
-hr: hr.o
-	$(CC) $(CFLAGS) hr.o -o $(TARGET)
+dl: dl.o
+	$(CC) $(CFLAGS) dl.o -o $(TARGET)
 
-hr.o: hr.c
+dl.o: dl.c

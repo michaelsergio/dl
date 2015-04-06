@@ -13,7 +13,7 @@
 #define DEFAULT_DASH "-"
 #define DEFAULT_DASH_UNICODE "─"
 
-#define PROGRAM_NAME "hr"
+#define PROGRAM_NAME "dl"
 
 #ifdef DEBUG
   #define DEBUG_LOG(...) fprintf(stderr, __VA_ARGS__)
@@ -123,7 +123,7 @@ void show_usage() {
 }
 
 void show_version() {
-  fprintf(stderr, "hr version 0.0.1\n");
+  fprintf(stderr, "dl version 0.0.1\n");
 }
 
 // TODO Remove this 
