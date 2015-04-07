@@ -8,6 +8,7 @@ By default, they are set for Ubuntu.
 I'll need to create a configure file for OS X in the future.
 
 Run the following commands:
+
     make
     make install
 
