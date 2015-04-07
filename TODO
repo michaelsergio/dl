@@ -19,10 +19,10 @@ Add easy color args.
 --title     Calculate center of string so I can add a section title.
 --bs        Before space (default 0)
 --as        After space  (default 0)
---surrond   Surronds the title in between two hr lines.
+--surrond   Surronds the title in between two dl lines.
 
 Instead of title being argument, put after command:
-hr "Hello World"
+dl "Hello World"
 outputs: ------ Hello World -------
 
 
@@ -46,7 +46,7 @@ Write my automated tests.
 
 Follow GNU standards for documentation.
 
-HR_OPTIONS environment variable for parsing first.
+DL_OPTIONS environment variable for parsing first.
 
 ! When output is a pipe it should only print 80 dashes instead of the 9000+
 characters it sees.
@@ -58,8 +58,8 @@ Option to remove the title color.
 
 Literal Fence
 http://en.wikipedia.org/wiki/Box-drawing_character
-hr -d ╦
-Add to the HR_OPTIONS env var.
+dl -d ╦
+Add to the DL_OPTIONS env var.
 
 
 Use rtomayko/ronn to generate man page.

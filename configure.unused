@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# If Linux
-# cp -f Makefile.in Makefile
-echo -e  \
-"Currently, configure is not implemented.\n\
-Please run make after verifying Makefile parameters are set correctly for your OS."

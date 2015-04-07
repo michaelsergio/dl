@@ -13,7 +13,7 @@
 #define DEFAULT_DASH "-"
 #define DEFAULT_DASH_UNICODE "─"
 
-#define PROGRAM_NAME "hr"
+#define PROGRAM_NAME "dl"
 
 #ifdef DEBUG
   #define DEBUG_LOG(...) fprintf(stderr, __VA_ARGS__)
@@ -123,12 +123,12 @@ void show_usage() {
 }
 
 void show_version() {
-  fprintf(stderr, "hr version 0.0.1\n");
+  fprintf(stderr, "dl version 0.0.1\n");
 }
 
 // TODO Remove this 
 static int verbose_flag;
-void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
+void check_options(int argc, char * const *argv, cmd_options_t *cmd_options) {
   while (1) {
     static struct option long_options[] = {
       /* These options set a flag. */
@@ -238,7 +238,7 @@ void check_options(int argc, const char **argv, cmd_options_t *cmd_options) {
   }
 }
 
-int main(int argc, const char *argv[])
+int main(int argc, char * const *argv)
 {
   // The default line options.
   line_options_t line_options = { 

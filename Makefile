@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 CC = gcc
-CFLAGS = -ansi -Wall -pedantic -std=c99
-LFLAGS =  
+CFLAGS = -Wall -pedantic -std=c99
+LDFLAGS =  
 VPATH=src
 
 # Following makefile conventions:
@@ -24,15 +24,17 @@ man1dir = $(mandir)/man1
 man1ext = .1
 
 # Executable Name
-TARGET=hr
+TARGET=dl
 
 
 # Everything else is part of the makefile.
 
-all: hr
+UNAME := $(shell uname)
+
+all: dl
 
 debug: CFLAGS += -DDEBUG -g
-debug: hr
+debug: dl
 
 clean: clean-build clean-install
 
@@ -52,13 +54,15 @@ install-bin:
 install-man:
 	mkdir -p $(man1dir)
 	cp $(TARGET)$(man1ext) $(man1dir)/$(TARGET)$(man1ext)
-	mandb
+	ifneq ($(UNAME), Darwin)
+	  mandb
+	endif
 
 uninstall:
 	rm $(bindir)/$(TARGET)
 	rm $(man1dir)/$(TARGET)$(man1ext)
 
-hr: hr.o
-	$(CC) $(CFLAGS) hr.o -o $(TARGET)
+dl: dl.o
+	$(CC) $(CFLAGS) dl.o -o $(TARGET)
 
-hr.o: hr.c
+dl.o: dl.c
