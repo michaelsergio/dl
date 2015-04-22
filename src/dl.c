@@ -122,7 +122,7 @@ void drawLine(line_options_t *options) {
     until = options->columns / 2 - textlen / 2;
 
     // Add a leading space
-    until -= 1;
+    if (until > 0) until -= 1;
   }
 
   // Do up until middle of word or whatever we have
