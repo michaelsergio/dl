@@ -99,6 +99,7 @@ void drawLine(line_options_t *options) {
   // Right: Print until - strlen(text), then print text
   // Center: is tricky so well handle that later.
   unsigned until = options->columns; 
+  unsigned final = 0;
   size_t textlen = 0;
 
   if (options->text) textlen = strlen(options->text);
@@ -114,8 +115,30 @@ void drawLine(line_options_t *options) {
   else if (options->text && options->position == POS_RIGHT) {
     until -= textlen + 1; // + extra space
   }
+  else if (options->text && options->position == POS_CENTER) {
+    // How much to do after middle of word.
+    final = until;
+    // Go until middle of word.
+    until = options->columns / 2 - textlen / 2;
+  }
 
+  // Do up until middle of word or whatever we have
   for (printed = 0; printed < until; printed++)  {
+    position += put_mbchar(str_ring + position, str_ring_len);
+    position %= str_ring_len; // Go back to beginning of ring if out.
+    // Increment printed only after a mbchar has been printed.
+  }
+
+  // Print the centered word
+  if (options->text && options->position == POS_CENTER) {
+    for (int i = 0; i < textlen; i++) {
+      put_mbchar(options->text + i, 1);
+      printed++;
+    }
+  }
+
+  // Continue with second half of word
+  for (; printed < final; printed++)  {
     position += put_mbchar(str_ring + position, str_ring_len);
     position %= str_ring_len; // Go back to beginning of ring if out.
     // Increment printed only after a mbchar has been printed.
