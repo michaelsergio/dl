@@ -95,8 +95,8 @@ void drawLine(line_options_t *options) {
   }
 
   // We're going to put the text in the center of a line.
-  // Left: Print strlen - nullterm text, then do rest.
-  // Right: Print until - strlen(text) - nullterm, then print text
+  // Left: Print strlen text, then do rest.
+  // Right: Print until - strlen(text), then print text
   // Center: is tricky so well handle that later.
   unsigned until = options->columns; 
   size_t textlen = 0;
@@ -107,15 +107,11 @@ void drawLine(line_options_t *options) {
   if (textlen + 1 > until) until = textlen + 1;
 
   if (options->text && options->position == POS_LEFT) {
-    // TODO: Check that textlen + 1 > until 
-    // Sometimes until is 0 and that is BAD!!!
     until -= textlen + 1; // + extra space
     for (int i = 0; i < textlen; i++) put_mbchar(options->text + i, 1);
     put_mbchar(" ", 1);
   }
   else if (options->text && options->position == POS_RIGHT) {
-    // TODO: Check that textlen + 1 > until 
-    // Sometimes until is 0 and that is BAD!!!
     until -= textlen + 1; // + extra space
   }
 
