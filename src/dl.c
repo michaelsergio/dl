@@ -21,12 +21,20 @@
   #define DEBUG_LOG(...)
 #endif
 
+enum position_e {
+  POS_NONE = 0,
+  POS_LEFT,
+  POS_RIGHT,
+  CENTER
+};
+
 typedef struct {
   unsigned columns;
   char *dash;
   size_t dash_len;
   char *color;           // A string defined in ansi.h or NULL.
   const char *text;
+  enum position_e position;
 } line_options_t;
 
 typedef struct {
@@ -52,9 +60,9 @@ unsigned int get_column_width_from_term() {
 // TEST when i+1 is NULL.
 // What if the strsize of LANG is too short.
     // Increment i only after a mbchar has been printed.
-// I dont fully trust this code.
+// I don't fully trust this code.
 bool is_utf8_supported() {
-  // The LANG enviorment variable should be defined with UTF in its name.
+  // The LANG environment variable should be defined with UTF in its name.
   char *lang = getenv("LANG");
   DEBUG_LOG("Current Env: %s\n", lang);
 
@@ -68,7 +76,7 @@ bool is_utf8_supported() {
   return false;
 }
 
-size_t put_mbchar(char *str_ring, size_t str_ring_len) {
+size_t put_mbchar(const char *str_ring, size_t str_ring_len) {
     size_t i;
     for (i = 0; i < mblen(str_ring, str_ring_len); i++) {
       putchar(str_ring[i]);
@@ -77,7 +85,7 @@ size_t put_mbchar(char *str_ring, size_t str_ring_len) {
 }
 
 void drawLine(line_options_t *options) {
-  unsigned int i;
+  unsigned int printed;
   char *str_ring = options->dash;
   size_t str_ring_len = strlen(options->dash);
   size_t position = 0;
@@ -86,18 +94,49 @@ void drawLine(line_options_t *options) {
     printf("%s", options->color);
   }
 
-  for (i = 0; i < options->columns; i++)  {
-    position += put_mbchar(str_ring + position, str_ring_len);
-    position %= str_ring_len; // Go back to begining of ring if out.
-    // Increment i only after a mbchar has been printed.
+  // We're going to put the text in the center of a line.
+  // Left: Print strlen - nullterm text, then do rest.
+  // Right: Print until - strlen(text) - nullterm, then print text
+  // Center: is tricky so well handle that later.
+  unsigned until = options->columns; 
+  size_t textlen = 0;
+
+  if (options->text) textlen = strlen(options->text);
+
+  // Ignore dash completely if text is longer than dash.
+  if (textlen + 1 > until) until = textlen + 1;
+
+  if (options->text && options->position == POS_LEFT) {
+    // TODO: Check that textlen + 1 > until 
+    // Sometimes until is 0 and that is BAD!!!
+    until -= textlen + 1; // + extra space
+    for (int i = 0; i < textlen; i++) put_mbchar(options->text + i, 1);
+    put_mbchar(" ", 1);
   }
+  else if (options->text && options->position == POS_RIGHT) {
+    // TODO: Check that textlen + 1 > until 
+    // Sometimes until is 0 and that is BAD!!!
+    until -= textlen + 1; // + extra space
+  }
+
+  for (printed = 0; printed < until; printed++)  {
+    position += put_mbchar(str_ring + position, str_ring_len);
+    position %= str_ring_len; // Go back to beginning of ring if out.
+    // Increment printed only after a mbchar has been printed.
+  }
+
+  if (options->text && options->position == POS_RIGHT) {
+    put_mbchar(" ", 1);
+    for (int i = 0; i < textlen; i++) put_mbchar(options->text + i, 1);
+  }
+
 
   if (options->color) {
     printf("%s", ANSI_COLOR_RESET);
   }
   putchar('\n');
 
-  DEBUG_LOG("Printed %d characters\n", i);
+  DEBUG_LOG("Printed %d characters\n", printed);
 }
 
 void show_usage() {
@@ -241,12 +280,13 @@ void check_options(int argc, char * const *argv, cmd_options_t *cmd_options) {
 int main(int argc, char * const *argv)
 {
   // The default line options.
-  line_options_t line_options = { 
-    .columns=DEFAULT_COLUMN_LEN,
-    .dash=(char *)DEFAULT_DASH,
-    .dash_len=sizeof(DEFAULT_DASH) - 1, // Ignore NULL Char
-    .color=NULL
-  };
+  line_options_t line_options;
+  memset(&line_options, 0, sizeof(line_options));
+  line_options.columns=DEFAULT_COLUMN_LEN;
+  line_options.dash=(char *)DEFAULT_DASH;
+  line_options.dash_len=sizeof(DEFAULT_DASH); // Ignore NULL Char
+  line_options.color=NULL;
+  line_options.position=POS_NONE;
 
   cmd_options_t cmd_options;
   memset(&cmd_options, 0, sizeof(cmd_options));
@@ -298,6 +338,8 @@ int main(int argc, char * const *argv)
       line_options.dash_len = strlen(DEFAULT_DASH_UNICODE);
     }
   }
+
+  line_options.position = POS_RIGHT;
 
   drawLine(&line_options);
   return 0;
