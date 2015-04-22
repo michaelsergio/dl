@@ -22,10 +22,9 @@
 #endif
 
 enum position_e {
-  POS_NONE = 0,
+  POS_CENTER = 0,
   POS_LEFT,
   POS_RIGHT,
-  CENTER
 };
 
 typedef struct {
@@ -42,6 +41,7 @@ typedef struct {
   unsigned force_columns;
   char *force_dash;
   const char *text;
+  enum position_e position;
 } cmd_options_t;
 
 unsigned int get_column_width_from_term() {
@@ -157,6 +157,9 @@ void show_usage() {
           "\n"
           "  -d  --dash dash_symbol\n"
           "  -n  --columns number\n"
+          "  -S  --start\n"
+          "  -E  --end\n"
+          "  -N  --center\n"
           "  text Text to be inserted into the center of a line"
   );
 }
@@ -191,12 +194,15 @@ void check_options(int argc, char * const *argv, cmd_options_t *cmd_options) {
       {"yellow",   no_argument, 0, 'y'},
       {"black",    no_argument, 0, 'k'},
       {"white",    no_argument, 0, 'w'},
+      {"start",    no_argument, 0, 'S'},
+      {"center",   no_argument, 0, 'N'},
+      {"end",      no_argument, 0, 'E'},
       {0, 0, 0, 0}
     };
     /* getopt_long stores the option index here. */
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "rgbymckwRGBCMYKWn:a:p:d:vh", long_options, &option_index); 
+    int c = getopt_long(argc, argv, "rgbymckwRGBCMYKWn:a:p:d:vhSNE", long_options, &option_index); 
     /* Detect the end of the options. */
     if (c == -1) {
       // If there is more after the options, use that as the input text.
@@ -270,6 +276,17 @@ void check_options(int argc, char * const *argv, cmd_options_t *cmd_options) {
         cmd_options->color = c;
         break;
 
+      case 'S': // Start 
+        cmd_options->position = POS_LEFT;
+        break;
+      case 'E': // End
+        cmd_options->position = POS_RIGHT;
+        break;
+      case 'N': // ceNter
+        cmd_options->position = POS_CENTER;
+        break;
+       
+
       default:
         DEBUG_LOG("%d('%c') unused!\n", c, c);
         abort();
@@ -286,7 +303,7 @@ int main(int argc, char * const *argv)
   line_options.dash=(char *)DEFAULT_DASH;
   line_options.dash_len=sizeof(DEFAULT_DASH); // Ignore NULL Char
   line_options.color=NULL;
-  line_options.position=POS_NONE;
+  line_options.position=POS_CENTER;
 
   cmd_options_t cmd_options;
   memset(&cmd_options, 0, sizeof(cmd_options));
@@ -339,7 +356,17 @@ int main(int argc, char * const *argv)
     }
   }
 
-  line_options.position = POS_RIGHT;
+  switch (cmd_options.position) {
+    case POS_LEFT:
+      line_options.position = POS_LEFT;
+      break;
+    case POS_RIGHT:
+      line_options.position = POS_RIGHT;
+      break;
+    case POS_CENTER: // fall to default
+    default:
+      line_options.position = POS_CENTER;
+  }
 
   drawLine(&line_options);
   return 0;
