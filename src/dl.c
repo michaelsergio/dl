@@ -120,6 +120,9 @@ void drawLine(line_options_t *options) {
     final = until;
     // Go until middle of word.
     until = options->columns / 2 - textlen / 2;
+
+    // Add a leading space
+    until -= 1;
   }
 
   // Do up until middle of word or whatever we have
@@ -131,10 +134,14 @@ void drawLine(line_options_t *options) {
 
   // Print the centered word
   if (options->text && options->position == POS_CENTER) {
+    put_mbchar(" ", 1);
+    printed++;
     for (int i = 0; i < textlen; i++) {
       put_mbchar(options->text + i, 1);
       printed++;
     }
+    put_mbchar(" ", 1);
+    printed++;
   }
 
   // Continue with second half of word
