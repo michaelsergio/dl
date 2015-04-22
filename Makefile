@@ -29,7 +29,7 @@ TARGET=dl
 
 # Everything else is part of the makefile.
 
-UNAME := $(shell uname)
+UNAME := $(shell uname -s)
 
 all: dl
 
@@ -54,9 +54,9 @@ install-bin:
 install-man:
 	mkdir -p $(man1dir)
 	cp $(TARGET)$(man1ext) $(man1dir)/$(TARGET)$(man1ext)
-	ifneq ($(UNAME), Darwin)
-	  mandb
-	endif
+ifneq ($(UNAME),Darwin)
+	mandb
+endif
 
 uninstall:
 	rm $(bindir)/$(TARGET)
